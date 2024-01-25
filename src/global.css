@@ -9,6 +9,14 @@
   --gray-900: #121214;
 
   --green-500: #71ff2f;
+  --green-300: #4f8934;
+  --blue-500: #5a74f7;
+  --red-500: #f75a68;
+}
+
+:focus {
+  outline: transparent;
+  box-shadow: 0 0 0 2px var(--green-500);
 }
 
 * {

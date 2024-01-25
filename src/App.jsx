@@ -15,9 +15,7 @@ function App() {
       <Sidebar />
 
       <main>
-        <Post 
-          title='autor: Lucas' 
-          text='orem ipsum dolor sit amet consectetur adipisicing elit. Dolor, adipisci qui velit accusamus laudantium optio exercitationem '/>
+        <Post />
       </main>
     </div>
 
