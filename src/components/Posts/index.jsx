@@ -1,37 +1,72 @@
 import Avatar from '../Avatar'
 import Comment from '../Comment'
-import styles from './styles.module.css'
 
-export default function Post() {
+import { format, formatDistanceToNow } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
+
+import styles from './styles.module.css'
+import { useState } from 'react'
+
+
+export default function Post({ author, publishedAt, content }) {
+  const [comments, setComments] = useState([
+      'Uau, que post incrível!'
+  ])
+
+  const [newCommentText, setNewCommentText ]= useState('')
+
+  const publishedAtDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
+    locale: ptBR
+  })
+
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBR,
+    addSuffix: true,
+  })
+
+  function handleCreateNewComment() {
+    event.preventDefault()
+
+    setComments([...comments, newCommentText])
+    setNewCommentText('')
+  }
+
+  function handleNewCommentChange() {
+    setNewCommentText(event.target.value)
+  }
+
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src="https://github.com/Freirelf.png" alt="Imagem de perfil"/>
+          <Avatar src={author.avatarUrl} alt="Imagem de perfil"/>
           <div className={styles.authorInfo}>
-            <strong>Lucas Freire</strong>
-            <span>Web developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
-        <time title='11 de janeiro as 17:34' dateTime='2024-01-23 17:34:29'>publicado há 1h</time>
+        <time title={publishedAtDateFormatted} dateTime={publishedAt.toISOString()}>{publishedDateRelativeToNow}</time>
       </header>
         <div className={styles.content}>
-          <p>Fala galeraa 👋</p>
-          <p>
-            Acabei de subir mais um projeto no meu portfolio. É um projeto que fiz para uma clínica.. O nome do projeto é Centro clínica 🚀
-          </p>
-          <p>👉 freirelf.design/centroclinica</p>
-          <p>
-            <a href="#">#html </a>
-            <a href="#">#css </a>
-            <a href="#">#javascript </a>
-            </p>
+          {content.map(item => {
+            if (item.type === 'paragraph') {
+              return <p key={item.content}>{item.content}</p>
+            } else if (item.type === 'link') {
+              return <p key={item.content}><a href="">{item.content}</a></p>
+            }
+          })}
         </div>
 
-        <form className={styles.commentForm}>
+        <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
           <strong>Deixe seu feedback</strong>
-          <textarea placeholder='Deixe um comentário'/>
+
+          <textarea 
+            name='comment'
+            placeholder='Deixe um comentário'
+            value={newCommentText}
+            onChange={handleNewCommentChange}
+            />
 
           <footer>
             <button type='submit'>Publicar</button>
@@ -40,9 +75,9 @@ export default function Post() {
         </form>
 
         <div className={styles.commentList}>
-          <Comment />
-          <Comment />
-          <Comment />
+          {comments.map(comment => {
+            return <Comment content={comment} key={comment}  />
+          })}
         </div>
 
     </article>

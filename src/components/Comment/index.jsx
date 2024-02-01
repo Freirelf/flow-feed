@@ -2,7 +2,7 @@ import { HandsClapping, Trash } from 'phosphor-react'
 import styles from './styles.module.css'
 import Avatar from '../Avatar'
 
-export default function Comment() {
+export default function Comment({content}) {
   return (
     <div className={styles.comment}>
       <Avatar hasBorder={false} src="https://github.com/devon.png"/>
@@ -20,7 +20,7 @@ export default function Comment() {
             </button>
           </header>
 
-          <p>Muito bom Lucas, parabéns!! 👏👏</p>
+          <p>{content} 👏👏</p>
         </div>
 
         <footer>
